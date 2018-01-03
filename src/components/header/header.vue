@@ -29,7 +29,8 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%">
     </div>
-    <div class="detail" v-show="detailShow" transition="fade">
+    <transition name="fade">
+    <div class="detail" v-show="detailShow">
       <div class="detail-wrapper clearfix">
         <div class="detail-main">
           <h1 class="name">{{seller.name}}</h1>
@@ -61,7 +62,9 @@
         <i class="icon-close"></i>
       </div>
     </div>
+    </transition>
   </div>
+
 </template>
 
 <script type="text/ecmascript-6">
@@ -211,6 +214,12 @@
       height 100%
       z-index -1
       filter blur(10px)
+    .fade-enter-active,.fade-leave-active
+      opacity 0
+      background rgba(7, 17, 27, 0)
+    .fade-enter-active-to,.fade-leave-active-to
+      opacity 1
+      background rgba(7, 17, 27, 0.8)
     .detail
       position fixed
       z-index 100
@@ -219,13 +228,8 @@
       width 100%
       height 100%
       overflow auto
-      transition all 0.5s
-      &.fade-transition
-        opacity 1
-        background rgba(7, 17, 27, 0.8)
-      &.fade-enter, &fade-leave
-        opacity 0
-        background rgba(7, 17, 27, 0)
+      transition all 0.4s
+      background rgba(7, 17, 27, 0.8)
       .detail-wrapper
         width 100%
         min-height 100%
@@ -291,7 +295,6 @@
               padding 0 12px
               line-height 24px
               font-size 12px
-
       .detail-close
         position relative
         width 32px
