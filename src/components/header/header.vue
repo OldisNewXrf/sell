@@ -19,7 +19,7 @@
       </div>
       <div v-if="seller.supports" class="support-count" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
-        <i class="icon-keyboard_arrow_right"></i>
+        <span class="icon-keyboard_arrow_right" ></span>
       </div>
     </div>
     <div class="bulletin-wrapper" @click="showDetail">
