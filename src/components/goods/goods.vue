@@ -30,7 +30,7 @@
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol :food="food" @cart-add="cartAdd"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -38,7 +38,8 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
+              :min-price="seller.minPrice" ref="shopcart"></shopcart>
   </div>
 </template>
 
@@ -125,12 +126,20 @@
         let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
         let el = foodList[index];
         this.foodsScroll.scrollToElement(el, 300);
+      },
+      cartAdd(target) {
+        this.$refs.shopcart.drop(target);
       }
     },
     components: {
       shopcart,
       cartcontrol
     }
+    // events: {
+    //   'cart-add'(target) {
+    //     this.cartAdd(target);
+    //   }
+    // }
   };
 </script>
 
