@@ -41,7 +41,7 @@
                   <span>￥{{food.price*food.count}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol  :food="food"></cartcontrol>
+                  <cartcontrol :food="food" @cart-add="cartAdd"></cartcontrol>
                 </div>
               </li>
             </ul>
@@ -159,7 +159,9 @@
           }
         }
       },
-
+      cartAdd(target) {
+        this.drop(target);
+      },
       beforeDrop(el) { // 这个方法的执行是因为这是一个vue的监听事件
         let count = this.balls.length;
         while (count--) {
@@ -178,7 +180,7 @@
         }
       },
 
-      dropping(el) {
+      dropping(el, done) {
         /* eslint-disable no-unused-vars */
         let rf = el.offsetHeight;
         this.$nextTick(() => {
@@ -187,6 +189,7 @@
           let inner = el.getElementsByClassName('inner-hook')[0];
           inner.style.webkitTransform = 'translate3d(0,0,0)';
           inner.style.transform = 'translate3d(0,0,0)';
+          el.addEventListener('transitionend', done);
           // el.addEventListener('tansitionend', done);
         });
       },
@@ -336,9 +339,11 @@
       width: 100%
       transform: translate3d(0, -100%, 0) //设置css方式的vue动画初始值,纵坐标的-100%是指相反方向的当前元素的100%高度,这是"入"
       &.fold-enter-active, &.fold-leave-active //shopcart-list的渐入渐出动画,这是"渐"
-        transition: all 0.5s //全部元素0.5秒过渡变化
+        transition: all 0.5s
+      //全部元素0.5秒过渡变化
       &.fold-enter, &.fold-leave-active // 这是"出"
-        transform: translate3d(0, 0, 0) //3d变形
+        transform: translate3d(0, 0, 0)
+      //3d变形
       .list-header
         height: 40px
         line-height: 40px
@@ -363,7 +368,7 @@
           position: relative
           padding: 12px 0
           box-sizing: border-box
-          border-1px(rgba(7, 17, 27, 0.1))//要处理1px边框问题,引入mixin.styl
+          border-1px(rgba(7, 17, 27, 0.1)) //要处理1px边框问题,引入mixin.styl
           .name
             line-height: 24px
             font-size: 14px
@@ -380,4 +385,23 @@
             position: absolute
             right: 0
             bottom: 6px
+
+  .list-mask
+    position fixed
+    top 0
+    left 0
+    width 100%
+    height 100%
+    z-index 40
+    filter blur(10px)
+    background rgba(7, 17, 27, 0.6)
+    &.fade-enter-active, &.fade-leave-active
+      opacity 1
+      transition all 0.5s
+      background rgba(7, 17, 27, 0.6)
+    &.fade-enter, &.fade-leave-to
+      opacity 0
+      background rgba(7, 17, 27, 0)
+
+
 </style>
